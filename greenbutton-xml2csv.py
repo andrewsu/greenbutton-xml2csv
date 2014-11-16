@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-import datetime
+from datetime import datetime,timedelta
 import sys
 
 if( len(sys.argv) < 2 ):
@@ -20,7 +20,8 @@ for file in sys.argv[1:]:
          continue
       for reading in child.findall('.//{http://naesb.org/espi}IntervalReading'):
          timestart = reading.find('./{http://naesb.org/espi}timePeriod/{http://naesb.org/espi}start').text
-         timestartStr = datetime.datetime.fromtimestamp(int(timestart)).strftime('%Y-%m-%d %H:%M:%S')
+         timestartAdj = datetime.fromtimestamp(int(timestart)) + timedelta(hours=7)
+         timestartStr = timestartAdj.strftime('%Y-%m-%d %H:%M:%S')
          value = reading.find('{http://naesb.org/espi}value').text
          print timestartStr+","+ value
    
